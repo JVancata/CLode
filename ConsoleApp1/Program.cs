@@ -65,7 +65,8 @@ namespace ConsoleApp1
             //Console.WriteLine(charToNum('A'));
             //string test = "A0";
             //Console.WriteLine(charToNum(test[0])+"-"+test[1]);
-            string[,] lodeInfo = new string[1,1];
+            string[,] lodeInfo = new string[5,4];
+            
             plocha[0, 0] = (int)State.Lod;
 
             Render(delkaPole, plocha);
