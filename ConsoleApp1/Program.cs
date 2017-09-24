@@ -8,17 +8,31 @@ namespace ConsoleApp1
 {
     class Program
     {
+        public static string[,] lodeInfo1 = new string[4, 4];
+        public static string[,] lodeInfo2 = new string[4, 4];
+        public static int delkaPole = 10;
+        public static int[,] plocha = new int[delkaPole, delkaPole];
+        public static bool player = false; //true = player2, false = player1 
+        public static int phase = 0; //0 = placing warships, 1=playing
+        public static int shipCtrX = 0;
+        public static int shipCtrY = 0;
+
         enum State
         {
             Prazdno, Lod, Hit, Miss
         }
+
         public static int charToNum(char pismeno)
         {           
             return pismeno-65;
         }
-        public static void Render(int delkaPole, int[,]  plocha, int ctrX, int ctrY)
+
+        public static void Render(int[,]  plocha, int ctrX, int ctrY, int phase)
         {
             Console.Clear();
+            //!String.IsNullOrEmpty(lodeInfo[i, a])
+           
+            Console.WriteLine("X: " + ctrX + " Y: " + ctrY);
             for (int i = 0; i < delkaPole + 1; i++)
             {
                 Console.Write(Convert.ToChar(i + 64) + " ");
@@ -36,11 +50,15 @@ namespace ConsoleApp1
                     }
 
                     //different symbols
-                    if (plocha[i, a] == (int)State.Prazdno)
+                    if (phase == 0 && String.IsNullOrEmpty(lodeInfo1[shipCtrX, shipCtrY]) && ctrY == i && ctrX == a) 
+                    {
+                        Console.Write("■ ");
+                    }
+                    else if (plocha[i, a] == (int)State.Prazdno)
                     {
                         Console.Write("~ ");
                     }
-                    else if (plocha[i, a] == (int)State.Lod)
+                    else if ((plocha[i, a] == (int)State.Lod))
                     {
                         Console.Write("■ ");
                     }
@@ -60,16 +78,25 @@ namespace ConsoleApp1
         }
         public static void Selection(int ctrX, int ctrY, int delka)
         {
-            ctrX = ctrX % delka;
-
+            if(phase == 0 && shipCtrX == 0 && !player)
+            {
+                lodeInfo1[shipCtrX, shipCtrY] = ""+(char)ctrX + ctrY+"";
+                plocha[ctrX, ctrY] = (int)State.Lod;
+                shipCtrY++;
+                if (shipCtrY>=4)
+                {
+                    shipCtrX++;
+                }
+            }
         }
         
         static void Main(string[] args)
         {
             State[] stav = new State[3];
-            int delkaPole = 10;
-            int[,] plocha = new int[delkaPole, delkaPole];
-            //(int) State.Prazdno
+            
+            
+            
+
             //základní vyplnění pole prázdnem
             for (int i = 0; i < delkaPole; i++)
             {
@@ -78,60 +105,52 @@ namespace ConsoleApp1
                     plocha[i, a] = (int) State.Prazdno;
                 }
             }
-            //Console.WriteLine(charToNum('A'));
-            //string test = "A0";
-            //Console.WriteLine(charToNum(test[0])+"-"+test[1]);
-            string[,] lodeInfo = new string[4,4];
-            lodeInfo[0, 1] = "A0";
-            lodeInfo[0, 1] = "A1";
-            //!String.IsNullOrEmpty(lodeInfo[i, a])
-            /*for (int i = 0; i < lodeInfo.GetLength(0); i++)
-            {
-                for (int a = 0; a < lodeInfo.GetLength(1); a++)
-                {
-                    
 
-                    if (!String.IsNullOrEmpty(lodeInfo[i, a]))
-                    {
-                        Console.WriteLine(lodeInfo[i, a]);
-                    }
-                    
-                }
-            }*/
-            //plocha[0, 0] = (int)State.Lod;
             int ctrX = 0;
             int ctrY = 0;
-            //int selected;
+            
+            
+
+            //selection loop
             while (true)
             {
-                Render(delkaPole, plocha, ctrX, ctrY);
+                Render(plocha, ctrX, ctrY, phase);
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();
-                //Console.WriteLine(consoleKeyInfo.Key);
-                //Console.ReadLine();                
+                            
                 if (consoleKeyInfo.Key == ConsoleKey.UpArrow)
                 {
                     ctrY--;
                     if (ctrY < 0)
                     {
-                        ctrY = delkaPole;
+                        ctrY = delkaPole-1;
                     }
-                    Render(delkaPole, plocha, ctrX, ctrY);
+                    
+                    Render(plocha, ctrX, ctrY, phase);
                 }
                 else if (consoleKeyInfo.Key == ConsoleKey.DownArrow)
                 {
                     ctrY++;
+                    if (ctrY > delkaPole - 1)
+                    {
+                        ctrY = 0;
+                    }
                 }
                 else if (consoleKeyInfo.Key == ConsoleKey.RightArrow)
                 {
                     ctrX++;
+                    if (ctrX > delkaPole - 1)
+                    {
+                        ctrX = 0;
+                    }
                 }
                 else if (consoleKeyInfo.Key == ConsoleKey.LeftArrow)
                 {
                     ctrX--;
-                    if (ctrX < 0 )
+                    if (ctrX < 0)
                     {
-                        ctrX = delkaPole;
+                        ctrX = delkaPole-1;
                     }
+                    
                 }
                 else if (consoleKeyInfo.Key == ConsoleKey.Enter)
                 {
