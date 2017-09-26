@@ -50,8 +50,18 @@ namespace ConsoleApp1
                     }
 
                     //different symbols
-                    if (phase == 0 && String.IsNullOrEmpty(lodeInfo1[shipCtrX, shipCtrY]) && ctrY == i && ctrX == a) 
+                    if (phase == 0  && ctrY == i && ctrX == a && shipCtrX == 1) 
                     {
+                        Console.Write("■ ");
+                    }
+                    else if (phase == 0 && ctrY == i && (ctrX == a || ctrX+1 == a) && shipCtrX == 1)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.Write("■ ");
+                    }
+                    else if (phase == 0 && ctrY == i && (ctrX == a || ctrX + 1 == a || ctrX + 2 == a) && shipCtrX == 2)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Blue;
                         Console.Write("■ ");
                     }
                     else if (plocha[i, a] == (int)State.Prazdno)
@@ -84,6 +94,31 @@ namespace ConsoleApp1
                 plocha[ctrY, ctrX] = (int)State.Lod;
                 shipCtrY++;
                 if (shipCtrY>=4)
+                {
+                    shipCtrX++;
+                    shipCtrY = 0;
+                }
+            }
+            else if (phase == 0 && shipCtrX == 1 && !player && ctrX < 8)
+            {
+                lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
+                plocha[ctrY, ctrX] = (int)State.Lod;
+                plocha[ctrY, ctrX+1] = (int)State.Lod;
+                shipCtrY++;
+                if (shipCtrY >= 2)
+                {
+                    shipCtrX++;
+                    shipCtrY = 0;
+                }
+            }
+            else if (phase == 0 && shipCtrX == 2 && !player && ctrX < 7)
+            {
+                lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
+                plocha[ctrY, ctrX] = (int)State.Lod;
+                plocha[ctrY, ctrX + 1] = (int)State.Lod;
+                plocha[ctrY, ctrX + 2] = (int)State.Lod;
+                shipCtrY++;
+                if (shipCtrY >= 2)
                 {
                     shipCtrX++;
                     shipCtrY = 0;
