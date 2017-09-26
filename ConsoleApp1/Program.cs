@@ -64,6 +64,16 @@ namespace ConsoleApp1
                         Console.BackgroundColor = ConsoleColor.Blue;
                         Console.Write("■ ");
                     }
+                    else if (phase == 0 && ctrY == i && (ctrX == a || ctrX + 1 == a || ctrX + 2 == a || ctrX + 3 == a) && shipCtrX == 3)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.Write("■ ");
+                    }
+                    else if (phase == 1 && ctrY == i && ctrX == a && !player)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Red;
+                        Console.Write("X ");
+                    }
                     else if (plocha[i, a] == (int)State.Prazdno)
                     {
                         Console.Write("~ ");
@@ -99,7 +109,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 1 && !player && ctrX < 8)
+            else if (phase == 0 && shipCtrX == 1 && !player && ctrX <= 8)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
                 plocha[ctrY, ctrX] = (int)State.Lod;
@@ -111,7 +121,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 2 && !player && ctrX < 7)
+            else if (phase == 0 && shipCtrX == 2 && !player && ctrX <= 7)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
                 plocha[ctrY, ctrX] = (int)State.Lod;
@@ -122,6 +132,21 @@ namespace ConsoleApp1
                 {
                     shipCtrX++;
                     shipCtrY = 0;
+                }
+            }
+            else if (phase == 0 && shipCtrX == 3 && !player && ctrX <= 6)
+            {
+                lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY + "*" + (char)ctrX + 3 + ctrY;
+                plocha[ctrY, ctrX] = (int)State.Lod;
+                plocha[ctrY, ctrX + 1] = (int)State.Lod;
+                plocha[ctrY, ctrX + 2] = (int)State.Lod;
+                plocha[ctrY, ctrX + 3] = (int)State.Lod;
+                shipCtrY++;
+                if (shipCtrY >= 1)
+                {
+                    shipCtrX++;
+                    shipCtrY = 0;
+                    phase++;
                 }
             }
         }
