@@ -1,0 +1,3 @@
+﻿1>------ Sestavování zahájeno: Projekt: ConsoleApp1, Konfigurace: Debug Any CPU ------
+1>  ConsoleApp1 -> G:\School\C#\9. Lode\Lodicky\ConsoleApp1\bin\Debug\ConsoleApp1.exe
+========== Sestavení: 1 úspěšně, 0 se nezdařilo, 0 aktuální, 0 přeskočeno ==========

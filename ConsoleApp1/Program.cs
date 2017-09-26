@@ -81,11 +81,12 @@ namespace ConsoleApp1
             if(phase == 0 && shipCtrX == 0 && !player)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = ""+(char)ctrX + ctrY+"";
-                plocha[ctrX, ctrY] = (int)State.Lod;
+                plocha[ctrY, ctrX] = (int)State.Lod;
                 shipCtrY++;
                 if (shipCtrY>=4)
                 {
                     shipCtrX++;
+                    shipCtrY = 0;
                 }
             }
         }
