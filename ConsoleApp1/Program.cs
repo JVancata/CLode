@@ -50,7 +50,7 @@ namespace ConsoleApp1
                     }
 
                     //different symbols
-                    if (phase == 0  && ctrY == i && ctrX == a && shipCtrX == 1) 
+                    if (phase == 0  && ctrY == i && ctrX == a && shipCtrX == 0) 
                     {
                         Console.Write("■ ");
                     }
@@ -96,12 +96,23 @@ namespace ConsoleApp1
                 Console.Write("\n");
             }
         }
-        public static void Selection(int ctrX, int ctrY, int delka)
+        public static void Selection(int ctrY, int ctrX, int delka)
         {
-            if(phase == 0 && shipCtrX == 0 && !player)
+            //hits
+            if (phase == 1 && plocha[ctrX, ctrY] == (int)State.Lod)
+            {
+                plocha[ctrX, ctrY] = (int)State.Hit;
+            }
+            else if (phase == 1 && plocha[ctrX, ctrY] == (int)State.Prazdno)
+            {
+                plocha[ctrX, ctrY] = (int)State.Miss;
+            }
+
+
+            else if (phase == 0 && shipCtrX == 0 && !player)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = ""+(char)ctrX + ctrY+"";
-                plocha[ctrY, ctrX] = (int)State.Lod;
+                plocha[ctrX, ctrY] = (int)State.Lod;
                 shipCtrY++;
                 if (shipCtrY>=4)
                 {
@@ -112,8 +123,8 @@ namespace ConsoleApp1
             else if (phase == 0 && shipCtrX == 1 && !player && ctrX <= 8)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
-                plocha[ctrY, ctrX] = (int)State.Lod;
-                plocha[ctrY, ctrX+1] = (int)State.Lod;
+                plocha[ctrX, ctrY] = (int)State.Lod;
+                plocha[ctrX, ctrY+1] = (int)State.Lod;
                 shipCtrY++;
                 if (shipCtrY >= 2)
                 {
@@ -124,9 +135,9 @@ namespace ConsoleApp1
             else if (phase == 0 && shipCtrX == 2 && !player && ctrX <= 7)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
-                plocha[ctrY, ctrX] = (int)State.Lod;
-                plocha[ctrY, ctrX + 1] = (int)State.Lod;
-                plocha[ctrY, ctrX + 2] = (int)State.Lod;
+                plocha[ctrX, ctrY] = (int)State.Lod;
+                plocha[ctrX, ctrY+1] = (int)State.Lod;
+                plocha[ctrX, ctrY+2] = (int)State.Lod;
                 shipCtrY++;
                 if (shipCtrY >= 2)
                 {
@@ -137,10 +148,10 @@ namespace ConsoleApp1
             else if (phase == 0 && shipCtrX == 3 && !player && ctrX <= 6)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY + "*" + (char)ctrX + 3 + ctrY;
-                plocha[ctrY, ctrX] = (int)State.Lod;
-                plocha[ctrY, ctrX + 1] = (int)State.Lod;
-                plocha[ctrY, ctrX + 2] = (int)State.Lod;
-                plocha[ctrY, ctrX + 3] = (int)State.Lod;
+                plocha[ctrX, ctrY] = (int)State.Lod;
+                plocha[ctrX, ctrY+1] = (int)State.Lod;
+                plocha[ctrX, ctrY+2] = (int)State.Lod;
+                plocha[ctrX, ctrY+3] = (int)State.Lod;
                 shipCtrY++;
                 if (shipCtrY >= 1)
                 {
@@ -149,6 +160,8 @@ namespace ConsoleApp1
                     phase++;
                 }
             }
+
+            
         }
         
         static void Main(string[] args)
