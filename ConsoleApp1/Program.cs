@@ -120,7 +120,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 1 && !player && ctrX <= 8)
+            else if (phase == 0 && shipCtrX == 1 && !player && ctrY < 8)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
                 plocha[ctrX, ctrY] = (int)State.Lod;
@@ -132,7 +132,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 2 && !player && ctrX <= 7)
+            else if (phase == 0 && shipCtrX == 2 && !player && ctrY < 7)
             {
                 lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
                 plocha[ctrX, ctrY] = (int)State.Lod;
