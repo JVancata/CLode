@@ -12,7 +12,7 @@ namespace ConsoleApp1
         public static string[,] lodeInfo2 = new string[4, 4];
         public static int delkaPole = 10;
         public static int[,] plocha = new int[delkaPole, delkaPole];
-        public static bool player = false; //true = player2, false = player1 XD
+        public static bool player = false; //true = player2, false = player1 XD XD
         public static int phase = 0; //0 = placing warships, 1=playing
         public static int shipCtrX = 0;
         public static int shipCtrY = 0;
