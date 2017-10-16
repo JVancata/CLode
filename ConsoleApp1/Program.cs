@@ -16,12 +16,14 @@ namespace ConsoleApp1
         public static int[,] plocha = new int[delkaPole, delkaPole];
         public static int[,] plocha2 = new int[delkaPole, delkaPole];
         public static int[,] hits = new int[2, 2];
+        
         //0,0 = first player hit count
         //1,1 = second player miss count
         public static bool player = false; //true = player2, false = player1
         public static int phase = 0; //0 = placing warships, 1=playing
         public static int shipCtrX = 0;
         public static int shipCtrY = 0;
+        public static bool gameEnd = false; //18 max
 
         enum State
         {
@@ -38,36 +40,54 @@ namespace ConsoleApp1
             Console.Clear();
             //!String.IsNullOrEmpty(lodeInfo[i, a])
             
-            Console.Write("Now is playing: ");
-            if (player)
+            if(!gameEnd)
             {
-                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.Write("PLAYER 2");
+                Console.Write("Now is playing: ");
+                if (player)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.Write("PLAYER 2");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("PLAYER 1");
+                }
+                Console.ResetColor();
+                Console.Write("\nPhase: ");
+                switch (phase)
+                {
+                    case 0:
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.Write("Place your warships!");
+                        break;
+                    case 1:
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write("Battle!");
+                        break;
+                    default:
+                        break;
+                }
+                Console.ResetColor();
+                Console.Write("\n\n");
+
             }
             else
             {
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.Write("PLAYER 1");
+                if (hits[0,0] >= 18)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.WriteLine("Player1 won!!");
+                }
+                else if (hits[1, 0] >= 18)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine("Player2 won!!");
+                }
+                Console.WriteLine("");
             }
             Console.ResetColor();
-            Console.Write("\nPhase: ");
-            switch (phase)
-            {
-                case 0:
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write("Place your warships!");
-                    break;
-                case 1:
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.Write("Battle!");
-                    break;
-                default:
-                    break;               
-            }
-            Console.ResetColor();
-            Console.Write("\n\n");
-           
-            Console.WriteLine("X: " + ctrX + " Y: " + ctrY);
+            //Console.WriteLine("X: " + ctrX + " Y: " + ctrY);
             for (int i = 0; i < delkaPole + 1; i++)
             {
                 Console.Write(Convert.ToChar(i + 64) + " ");
@@ -137,6 +157,7 @@ namespace ConsoleApp1
         }
         public static void Selection(int ctrY, int ctrX, int[,] plocha)
         {
+            bool noWarship = true;
             //hits
             if (phase == 1 && plocha[ctrX, ctrY] == (int)State.Lod)
             {
@@ -178,65 +199,113 @@ namespace ConsoleApp1
             }
             else if (phase == 0 && shipCtrX == 0)
             {
+                
                 //lodeInfo1[shipCtrX, shipCtrY] = ""+(char)ctrX + ctrY+"";
-                plocha[ctrX, ctrY] = (int)State.Lod;
-                shipCtrY++;
-                if (shipCtrY>=4)
+                for (int i = 0; i < 1; i++)
                 {
-                    shipCtrX++;
-                    shipCtrY = 0;
+                    if (plocha[ctrX + i, ctrY + i] == (int)State.Lod)
+                    {
+                        noWarship = false;
+                    }
                 }
+                if (noWarship)
+                {
+                    plocha[ctrX, ctrY] = (int)State.Lod;
+                    shipCtrY++;
+                    if (shipCtrY >= 4)
+                    {
+                        shipCtrX++;
+                        shipCtrY = 0;
+                    }
+                }
+                
             }
-            else if (phase == 0 && shipCtrX == 1 && ctrY <= 8)
+            else if (phase == 0 && shipCtrX == 1 && ctrY <= 8)                
             {
-                //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
-                plocha[ctrX, ctrY] = (int)State.Lod;
-                plocha[ctrX, ctrY+1] = (int)State.Lod;
-                shipCtrY++;
-                if (shipCtrY >= 2)
+                for (int i = 0; i < 2; i++)
                 {
-                    shipCtrX++;
-                    shipCtrY = 0;
+                    if (plocha[ctrX + i, ctrY + i] == (int)State.Lod)
+                    {
+                        noWarship = false;
+                    }
                 }
+                //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
+                if (noWarship)
+                {
+                    plocha[ctrX, ctrY] = (int)State.Lod;
+                    plocha[ctrX, ctrY + 1] = (int)State.Lod;
+                    shipCtrY++;
+                    if (shipCtrY >= 2)
+                    {
+                        shipCtrX++;
+                        shipCtrY = 0;
+                    }
+                }
+                
             }
             else if (phase == 0 && shipCtrX == 2 && ctrY <= 7)
             {
-                //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
-                plocha[ctrX, ctrY] = (int)State.Lod;
-                plocha[ctrX, ctrY+1] = (int)State.Lod;
-                plocha[ctrX, ctrY+2] = (int)State.Lod;
-                shipCtrY++;
-                if (shipCtrY >= 2)
+                for (int i = 0; i < 3; i++)
                 {
-                    shipCtrX++;
-                    shipCtrY = 0;
+                    if (plocha[ctrX + i, ctrY + i] == (int)State.Lod)
+                    {
+                        noWarship = false;
+                    }
                 }
+                if (noWarship)
+                {
+                    plocha[ctrX, ctrY] = (int)State.Lod;
+                    plocha[ctrX, ctrY + 1] = (int)State.Lod;
+                    plocha[ctrX, ctrY + 2] = (int)State.Lod;
+                    shipCtrY++;
+                    if (shipCtrY >= 2)
+                    {
+                        shipCtrX++;
+                        shipCtrY = 0;
+                    }
+                }
+                //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
+                
             }
             else if (phase == 0 && shipCtrX == 3 && ctrY <= 6)
             {
-                //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY + "*" + (char)ctrX + 3 + ctrY;
-                plocha[ctrX, ctrY] = (int)State.Lod;
-                plocha[ctrX, ctrY+1] = (int)State.Lod;
-                plocha[ctrX, ctrY+2] = (int)State.Lod;
-                plocha[ctrX, ctrY+3] = (int)State.Lod;
-                shipCtrY++;
-                if (shipCtrY >= 1)
+                for (int i = 0; i < 4; i++)
                 {
-                    shipCtrX = 0;
-                    shipCtrY = 0;
-                    if (!player)
+                    if (plocha[ctrX + i, ctrY + i] == (int)State.Lod)
                     {
-                        player = !player;
+                        noWarship = false;
                     }
-                    else
-                    {
-                        phase++;
-                        player = !player;
-                    }
-                    
                 }
-            }
+                if (noWarship)
+                {
+                    plocha[ctrX, ctrY] = (int)State.Lod;
+                    plocha[ctrX, ctrY + 1] = (int)State.Lod;
+                    plocha[ctrX, ctrY + 2] = (int)State.Lod;
+                    plocha[ctrX, ctrY + 3] = (int)State.Lod;
+                    shipCtrY++;
+                    if (shipCtrY >= 1)
+                    {
+                        shipCtrX = 0;
+                        shipCtrY = 0;
+                        if (!player)
+                        {
+                            player = !player;
+                        }
+                        else
+                        {
+                            phase++;
+                            player = !player;
+                        }
 
+                    }
+                }
+                //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY + "*" + (char)ctrX + 3 + ctrY;
+                
+            }
+            if(hits[0,0] >= 18)
+            {
+                gameEnd = true;
+            }
             
         }
         public static int[,] FillPlocha(int [,] plocha)
@@ -253,7 +322,8 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             State[] stav = new State[3];
-
+            hits[0, 0] = 0;
+            hits[1, 0] = 0;
             //základní vyplnění pole prázdnem
             plocha = FillPlocha(plocha);
             plocha2 = FillPlocha(plocha2);
@@ -322,7 +392,7 @@ namespace ConsoleApp1
                     }
                     
                 }
-                else if (consoleKeyInfo.Key == ConsoleKey.Enter)
+                else if (consoleKeyInfo.Key == ConsoleKey.Enter && !gameEnd)
                 {
                     if (player)
                     {
@@ -342,11 +412,11 @@ namespace ConsoleApp1
                         {
                             Console.Write("\n\n");
                             Console.WriteLine("3");
-                            Thread.Sleep(500);
+                            Thread.Sleep(250);
                             Console.WriteLine("2");
-                            Thread.Sleep(500);
+                            Thread.Sleep(250);
                             Console.WriteLine("1");
-                            Thread.Sleep(500);
+                            Thread.Sleep(250);
                         }
                         
                     }
@@ -365,14 +435,13 @@ namespace ConsoleApp1
                         
                         if (phase > 0)
                         {
-                            Console.Write("\n\n");
-                            Thread.Sleep(1000);
+                            Console.Write("\n\n");                            
                             Console.WriteLine("3");
-                            Thread.Sleep(500);
+                            Thread.Sleep(250);
                             Console.WriteLine("2");
-                            Thread.Sleep(500);
+                            Thread.Sleep(250);
                             Console.WriteLine("1");
-                            Thread.Sleep(500);
+                            Thread.Sleep(250);
                         }
                         
                     }
