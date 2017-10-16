@@ -67,7 +67,7 @@ namespace ConsoleApp1
             Console.ResetColor();
             Console.Write("\n\n");
            
-            //Console.WriteLine("X: " + ctrX + " Y: " + ctrY);
+            Console.WriteLine("X: " + ctrX + " Y: " + ctrY);
             for (int i = 0; i < delkaPole + 1; i++)
             {
                 Console.Write(Convert.ToChar(i + 64) + " ");
@@ -187,7 +187,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 1 && ctrY < 8)
+            else if (phase == 0 && shipCtrX == 1 && ctrY <= 8)
             {
                 //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX+1 + ctrY;
                 plocha[ctrX, ctrY] = (int)State.Lod;
@@ -199,7 +199,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 2 && ctrY < 7)
+            else if (phase == 0 && shipCtrX == 2 && ctrY <= 7)
             {
                 //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY;
                 plocha[ctrX, ctrY] = (int)State.Lod;
@@ -212,7 +212,7 @@ namespace ConsoleApp1
                     shipCtrY = 0;
                 }
             }
-            else if (phase == 0 && shipCtrX == 3 && ctrX <= 6)
+            else if (phase == 0 && shipCtrX == 3 && ctrY <= 6)
             {
                 //lodeInfo1[shipCtrX, shipCtrY] = "" + (char)ctrX + ctrY + "*" + (char)ctrX + 1 + ctrY + "*" + (char)ctrX + 2 + ctrY + "*" + (char)ctrX + 3 + ctrY;
                 plocha[ctrX, ctrY] = (int)State.Lod;
